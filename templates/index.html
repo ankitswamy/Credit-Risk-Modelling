@@ -1,0 +1,2224 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Risk Prediction System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            margin: -2rem -2rem 3rem -2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn {
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            border: none;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(86, 171, 47, 0.3);
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+            padding: 1rem 1.5rem;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .result-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .result-card .prediction {
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 1rem 0;
+        }
+
+        .probability-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .progress {
+            height: 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-bar {
+            border-radius: 10px;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .feature-group {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #667eea;
+        }
+
+        .tooltip-icon {
+            color: #667eea;
+            cursor: help;
+            margin-left: 0.5rem;
+        }
+
+        .field-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+            font-style: italic;
+        }
+
+        .field-description strong {
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-area:hover {
+            background: #e9ecef;
+            border-color: #764ba2;
+        }
+
+        .file-upload-area.dragover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .result-card .prediction {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                <div class="main-container">
+                    <div class="header">
+                        <h1><i class="fas fa-chart-line me-3"></i>Credit Risk Prediction System</h1>
+                        <p>Advanced Machine Learning Model for Credit Risk Assessment</p>
+                    </div>
+
+                    <!-- Single Prediction Form 
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-user me-2"></i>Single Record Prediction
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info mb-4">
+                                <h6><i class="fas fa-info-circle me-2"></i>Field Information:</h6>
+                                <p class="mb-0">Each field below shows both a user-friendly description and the
+                                    technical column name. Use the column names when mapping data from Excel files or
+                                    CSV files for testing.</p>
+                            </div>
+                            <form id="predictionForm" method="POST" action="/predict">
+                                {{ form.hidden_tag() }}
+
+                                <!-- Financial Metrics 
+                                <div class="feature-group">
+                                    <h5 class="section-title">Financial Metrics</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_tl_open_L6M.label.text }}</label>
+                                                <div class="field-description">{{ form.pct_tl_open_L6M.description }}
+                                                </div>
+                                                <div class="field-description"><strong>Column Name:</strong>
+                                                    pct_tl_open_L6M</div>
+                                                {{ form.pct_tl_open_L6M(class="form-control", placeholder="0.0-1.0",
+                                                step="0.01") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_tl_closed_L6M.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.pct_tl_closed_L6M.description }}
+                                                </div>
+                                                {{ form.pct_tl_closed_L6M(class="form-control", placeholder="0.0-1.0",
+                                                step="0.01") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Tot_TL_closed_L12M.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.Tot_TL_closed_L12M.description }}
+                                                </div>
+                                                {{ form.Tot_TL_closed_L12M(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_tl_closed_L12M.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.pct_tl_closed_L12M.description }}
+                                                </div>
+                                                {{ form.pct_tl_closed_L12M(class="form-control", placeholder="0.0-1.0",
+                                                step="0.01") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Tot_Missed_Pmnt.label.text }}</label>
+                                                <div class="field-description">{{ form.Tot_Missed_Pmnt.description }}
+                                                </div>
+                                                {{ form.Tot_Missed_Pmnt(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.NETMONTHLYINCOME.label.text }}</label>
+                                                <div class="field-description">{{ form.NETMONTHLYINCOME.description }}
+                                                </div>
+                                                {{ form.NETMONTHLYINCOME(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Trade Line Types 
+                                <div class="feature-group">
+                                    <h5 class="section-title">Credit Account Types</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.CC_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.CC_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> CC_TL</div>
+                                                {{ form.CC_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Home_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Home_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> Home_TL
+                                                </div>
+                                                {{ form.Home_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.PL_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.PL_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> PL_TL</div>
+                                                {{ form.PL_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Secured_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Secured_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> Secured_TL
+                                                </div>
+                                                {{ form.Secured_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Unsecured_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Unsecured_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong>
+                                                    Unsecured_TL</div>
+                                                {{ form.Unsecured_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Other_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Other_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> Other_TL
+                                                </div>
+                                                {{ form.Other_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Account Ages 
+                                <div class="feature-group">
+                                    <h5 class="section-title">Account History</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Age_Oldest_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Age_Oldest_TL.description }}
+                                                </div>
+                                                {{ form.Age_Oldest_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Age_Newest_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Age_Newest_TL.description }}
+                                                </div>
+                                                {{ form.Age_Newest_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.time_since_recent_payment.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.time_since_recent_payment.description }}</div>
+                                                {{ form.time_since_recent_payment(class="form-control",
+                                                placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Time_With_Curr_Empr.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.Time_With_Curr_Empr.description
+                                                    }}</div>
+                                                {{ form.Time_With_Curr_Empr(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Delinquency Information 
+                                <div class="feature-group">
+                                    <h5 class="section-title">Payment History</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.max_recent_level_of_deliq.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.max_recent_level_of_deliq.description }}</div>
+                                                {{ form.max_recent_level_of_deliq(class="form-control",
+                                                placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.recent_level_of_deliq.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.recent_level_of_deliq.description
+                                                    }}</div>
+                                                {{ form.recent_level_of_deliq(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_deliq_6_12mts.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.num_deliq_6_12mts.description }}
+                                                </div>
+                                                {{ form.num_deliq_6_12mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_times_60p_dpd.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.num_times_60p_dpd.description }}
+                                                </div>
+                                                {{ form.num_times_60p_dpd(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_std_12mts.label.text }}</label>
+                                                <div class="field-description">{{ form.num_std_12mts.description }}
+                                                </div>
+                                                {{ form.num_std_12mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_sub.label.text }}</label>
+                                                <div class="field-description">{{ form.num_sub.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> num_sub
+                                                </div>
+                                                {{ form.num_sub(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_sub_6mts.label.text }}</label>
+                                                <div class="field-description">{{ form.num_sub_6mts.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong>
+                                                    num_sub_6mts</div>
+                                                {{ form.num_sub_6mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_sub_12mts.label.text }}</label>
+                                                <div class="field-description">{{ form.num_sub_12mts.description }}
+                                                </div>
+                                                {{ form.num_sub_12mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_dbt.label.text }}</label>
+                                                <div class="field-description">{{ form.num_dbt.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> num_dbt
+                                                </div>
+                                                {{ form.num_dbt(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_dbt_12mts.label.text }}</label>
+                                                <div class="field-description">{{ form.num_dbt_12mts.description }}
+                                                </div>
+                                                {{ form.num_dbt_12mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_lss.label.text }}</label>
+                                                <div class="field-description">{{ form.num_lss.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> num_lss
+                                                </div>
+                                                {{ form.num_lss(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Enquiry Information 
+                                <div class="feature-group">
+                                    <h5 class="section-title">Credit Applications</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.CC_enq_L12m.label.text }}</label>
+                                                <div class="field-description">{{ form.CC_enq_L12m.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> CC_enq_L12m
+                                                </div>
+                                                {{ form.CC_enq_L12m(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.PL_enq_L12m.label.text }}</label>
+                                                <div class="field-description">{{ form.PL_enq_L12m.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> PL_enq_L12m
+                                                </div>
+                                                {{ form.PL_enq_L12m(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.time_since_recent_enq.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.time_since_recent_enq.description
+                                                    }}</div>
+                                                {{ form.time_since_recent_enq(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.enq_L3m.label.text }}</label>
+                                                <div class="field-description">{{ form.enq_L3m.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> enq_L3m
+                                                </div>
+                                                {{ form.enq_L3m(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_PL_enq_L6m_of_ever.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.pct_PL_enq_L6m_of_ever.description }}</div>
+                                                {{ form.pct_PL_enq_L6m_of_ever(class="form-control",
+                                                placeholder="0.0-1.0", step="0.01") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_CC_enq_L6m_of_ever.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.pct_CC_enq_L6m_of_ever.description }}</div>
+                                                {{ form.pct_CC_enq_L6m_of_ever(class="form-control",
+                                                placeholder="0.0-1.0", step="0.01") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Flags 
+                                <div class="feature-group">
+                                    <h5 class="section-title">Current Credit Products</h5>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.CC_Flag.label.text }}</label>
+                                                <div class="field-description">{{ form.CC_Flag.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> CC_Flag
+                                                </div>
+                                                {{ form.CC_Flag(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.PL_Flag.label.text }}</label>
+                                                <div class="field-description">{{ form.PL_Flag.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> PL_Flag
+                                                </div>
+                                                {{ form.PL_Flag(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.HL_Flag.label.text }}</label>
+                                                <div class="field-description">{{ form.HL_Flag.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> HL_Flag
+                                                </div>
+                                                {{ form.HL_Flag(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.GL_Flag.label.text }}</label>
+                                                <div class="field-description">{{ form.GL_Flag.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> GL_Flag
+                                                </div>
+                                                {{ form.GL_Flag(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Demographics 
+                                <div class="feature-group">
+                                    <h5 class="section-title">Personal Information</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.EDUCATION.label.text }}</label>
+                                                <div class="field-description">{{ form.EDUCATION.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> EDUCATION
+                                                </div>
+                                                {{ form.EDUCATION(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.MARITALSTATUS_Married.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.MARITALSTATUS_Married.description
+                                                    }}</div>
+                                                {{ form.MARITALSTATUS_Married(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.MARITALSTATUS_Single.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.MARITALSTATUS_Single.description
+                                                    }}</div>
+                                                {{ form.MARITALSTATUS_Single(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.GENDER_F.label.text }}</label>
+                                                <div class="field-description">{{ form.GENDER_F.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> GENDER_F
+                                                </div>
+                                                {{ form.GENDER_F(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.GENDER_M.label.text }}</label>
+                                                <div class="field-description">{{ form.GENDER_M.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> GENDER_M
+                                                </div>
+                                                {{ form.GENDER_M(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Product Enquiries 
+                                <div class="feature-group">
+                                    <h5 class="section-title">Most Recent Credit Application</h5>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_AL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_AL.description }}
+                                                </div>
+                                                {{ form.last_prod_enq2_AL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_CC.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_CC.description }}
+                                                </div>
+                                                {{ form.last_prod_enq2_CC(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_ConsumerLoan.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.last_prod_enq2_ConsumerLoan.description }}</div>
+                                                {{ form.last_prod_enq2_ConsumerLoan(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_HL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_HL.description }}
+                                                </div>
+                                                {{ form.last_prod_enq2_HL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_PL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_PL.description }}
+                                                </div>
+                                                {{ form.last_prod_enq2_PL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_others.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_others.description
+                                                    }}</div>
+                                                {{ form.last_prod_enq2_others(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="feature-group">
+                                    <h5 class="section-title">First Credit Application</h5>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_AL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.first_prod_enq2_AL.description }}
+                                                </div>
+                                                {{ form.first_prod_enq2_AL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_CC.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.first_prod_enq2_CC.description }}
+                                                </div>
+                                                {{ form.first_prod_enq2_CC(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{
+                                                    form.first_prod_enq2_ConsumerLoan.label.text }}</label>
+                                                <div class="field-description">{{
+                                                    form.first_prod_enq2_ConsumerLoan.description }}</div>
+                                                {{ form.first_prod_enq2_ConsumerLoan(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_HL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.first_prod_enq2_HL.description }}
+                                                </div>
+                                                {{ form.first_prod_enq2_HL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_PL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.first_prod_enq2_PL.description }}
+                                                </div>
+                                                {{ form.first_prod_enq2_PL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_others.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.first_prod_enq2_others.description }}</div>
+                                                {{ form.first_prod_enq2_others(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-brain me-2"></i>Predict Credit Risk
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="loading" id="loading">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-3">Processing your request...</p>
+                            </div>
+
+                            <div id="result" style="display: none;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Batch Upload 
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-upload me-2"></i>Batch Prediction
+                        </div>
+                        <div class="card-body">
+                            <form id="batchForm" method="POST" action="/predict_batch" enctype="multipart/form-data">
+                                {{ batch_form.hidden_tag() }}
+
+                                <div class="file-upload-area" id="fileUploadArea">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                    <h5>Upload Data File for Batch Prediction</h5>
+                                    <p class="text-muted">Drag and drop your file here or click to browse</p>
+                                    <p class="text-muted"><strong>Supported formats:</strong> CSV, Excel (.xlsx/.xls),
+                                        JSON</p>
+                                    {{ batch_form.batch_file(class="form-control", id="batchFile",
+                                    accept=".csv,.xlsx,.xls,.json", style = "display:none")}}
+                                    <div class="mt-3" id="submitButtonArea" style="display:none">
+                                        <button type="submit" class="btn btn-success btn-lg">
+                                            <i class="fas fa-play me-2"></i>Process Batch Prediction
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info mt-3">
+                                    <h6><i class="fas fa-info-circle me-2"></i>File Requirements:</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>CSV Files:</strong> Must contain all required columns with proper
+                                            headers</li>
+                                        <li><strong>Excel Files:</strong> First sheet will be used, must contain all
+                                            required columns</li>
+                                        <li><strong>JSON Files:</strong> Can be array of objects or single object with
+                                            'data'/'records' key</li>
+                                        <li>Maximum file size: 16MB</li>
+                                        <li>Missing values will be filled with 0</li>
+                                        <li>Results will be downloaded as CSV (except JSON input returns JSON response)
+                                        </li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form submission handling
+        document.getElementById('predictionForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    loading.style.display = 'none';
+
+                    if (data.success) {
+                        let resultHtml = `
+                        <div class="result-card">
+                            <h3><i class="fas fa-check-circle me-2"></i>Prediction Complete</h3>
+                            <div class="prediction">${data.prediction}</div>
+                            <p class="mb-4">Credit Risk Classification</p>
+                    `;
+
+                        if (data.probabilities) {
+                            resultHtml += '<h5>Prediction Probabilities:</h5>';
+                            for (const [class_name, prob] of Object.entries(data.probabilities)) {
+                                const percentage = (prob * 100).toFixed(1);
+                                resultHtml += `
+                                <div class="probability-bar">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>${class_name}</span>
+                                        <span>${percentage}%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: ${percentage}%"></div>
+                                    </div>
+                                </div>
+                            `;
+                            }
+                        }
+
+                        resultHtml += '</div>';
+                        result.innerHTML = resultHtml;
+                    } else {
+                        result.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i>Error</h5>
+                            <p>${data.error}</p>
+                        </div>
+                    `;
+                    }
+
+                    result.style.display = 'block';
+                })
+                .catch(error => {
+                    loading.style.display = 'none';
+                    result.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h5><i class="fas fa-exclamation-triangle me-2"></i>Error</h5>
+                        <p>An error occurred while processing your request.</p>
+                    </div>
+                `;
+                    result.style.display = 'block';
+                });
+        });
+
+        // File upload area styling
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const batchFile = document.getElementById('batchFile');
+
+        fileUploadArea.addEventListener('click', () => batchFile.click());
+
+        batchFile.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                let iconClass = 'fas fa-file fa-3x text-success mb-3';
+
+                // Set appropriate icon based on file type
+                if (fileExtension === 'csv') {
+                    iconClass = 'fas fa-file-csv fa-3x text-success mb-3';
+                } else if (fileExtension === 'xlsx' || fileExtension === 'xls') {
+                    iconClass = 'fas fa-file-excel fa-3x text-success mb-3';
+                } else if (fileExtension === 'json') {
+                    iconClass = 'fas fa-file-code fa-3x text-success mb-3';
+                }
+
+                // Store the file input before clearing
+                const fileInput = this.cloneNode(true);
+
+                fileUploadArea.innerHTML = `
+                    <i class="${iconClass}"></i>
+                    <h5>File Selected: ${file.name}</h5>
+                    <p class="text-muted">Ready for batch processing</p>
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-play me-2"></i>Process Batch Prediction
+                        </button>
+                    </div>
+                `;
+
+                 // Re-append the file input (hidden)
+                fileUploadArea.appendChild(fileInput);
+            }
+        });
+
+        // Drag and drop functionality
+        fileUploadArea.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', function (e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', function (e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                // Check if file type is supported
+                if (['csv', 'xlsx', 'xls', 'json'].includes(fileExtension)) {
+                    batchFile.files = files;
+                    batchFile.dispatchEvent(new Event('change'));
+                } else {
+                    alert('Please select a supported file format (CSV, Excel, or JSON).');
+                }
+            }
+        });
+
+        // Batch form submission
+        document.getElementById('batchForm').addEventListener('submit', function (e) {
+            const currentBatchFile = document.getElementById('batchFile');
+            if (!currentBatchFile || !currentBatchFile.files.length) {
+                e.preventDefault();
+                alert('Please select a file first.');
+                return;
+            }
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn){
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            }
+        });
+
+        // Form validation
+        function validateForm() {
+            const requiredFields = document.querySelectorAll('input[required], select[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+
+            return isValid;
+        }
+
+        // Real-time validation
+        document.querySelectorAll('input, select').forEach(field => {
+            field.addEventListener('blur', function () {
+                if (this.hasAttribute('required') && !this.value) {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html> 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Risk Prediction System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            margin: -2rem -2rem 3rem -2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn {
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            border: none;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(86, 171, 47, 0.3);
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+            padding: 1rem 1.5rem;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .result-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .result-card .prediction {
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 1rem 0;
+        }
+
+        .probability-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .progress {
+            height: 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .progress-bar {
+            border-radius: 10px;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .feature-group {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #667eea;
+        }
+
+        .tooltip-icon {
+            color: #667eea;
+            cursor: help;
+            margin-left: 0.5rem;
+        }
+
+        .field-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+            font-style: italic;
+        }
+
+        .field-description strong {
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload-area:hover {
+            background: #e9ecef;
+            border-color: #764ba2;
+        }
+
+        .file-upload-area.dragover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        #uploadContent i, #uploadContent h5, #uploadContent p {
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .result-card .prediction {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                <div class="main-container">
+                    <div class="header">
+                        <h1><i class="fas fa-chart-line me-3"></i>Credit Risk Prediction System</h1>
+                        <p>Advanced Machine Learning Model for Credit Risk Assessment</p>
+                    </div>
+
+                    <!-- Single Prediction Form -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-user me-2"></i>Single Record Prediction
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info mb-4">
+                                <h6><i class="fas fa-info-circle me-2"></i>Field Information:</h6>
+                                <p class="mb-0">Each field below shows both a user-friendly description and the
+                                    technical column name. Use the column names when mapping data from Excel files or
+                                    CSV files for testing.</p>
+                            </div>
+                            <form id="predictionForm" method="POST" action="/predict">
+                                {{ form.hidden_tag() }}
+
+
+                                </div>
+                            <form id="predictionForm" method="POST" action="/predict">
+                                {{ form.hidden_tag() }}
+
+                                <!-- Financial Metrics -->
+                                <div class="feature-group">
+                                    <h5 class="section-title">Financial Metrics</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_tl_open_L6M.label.text }}</label>
+                                                <div class="field-description">{{ form.pct_tl_open_L6M.description }}
+                                                </div>
+                                                <div class="field-description"><strong>Column Name:</strong>
+                                                    pct_tl_open_L6M</div>
+                                                {{ form.pct_tl_open_L6M(class="form-control", placeholder="0.0-1.0",
+                                                step="0.01") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_tl_closed_L6M.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.pct_tl_closed_L6M.description }}
+                                                </div>
+                                                {{ form.pct_tl_closed_L6M(class="form-control", placeholder="0.0-1.0",
+                                                step="0.01") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Tot_TL_closed_L12M.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.Tot_TL_closed_L12M.description }}
+                                                </div>
+                                                {{ form.Tot_TL_closed_L12M(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_tl_closed_L12M.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.pct_tl_closed_L12M.description }}
+                                                </div>
+                                                {{ form.pct_tl_closed_L12M(class="form-control", placeholder="0.0-1.0",
+                                                step="0.01") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Tot_Missed_Pmnt.label.text }}</label>
+                                                <div class="field-description">{{ form.Tot_Missed_Pmnt.description }}
+                                                </div>
+                                                {{ form.Tot_Missed_Pmnt(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.NETMONTHLYINCOME.label.text }}</label>
+                                                <div class="field-description">{{ form.NETMONTHLYINCOME.description }}
+                                                </div>
+                                                {{ form.NETMONTHLYINCOME(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Trade Line Types -->
+                                <div class="feature-group">
+                                    <h5 class="section-title">Credit Account Types</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.CC_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.CC_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> CC_TL</div>
+                                                {{ form.CC_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Home_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Home_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> Home_TL
+                                                </div>
+                                                {{ form.Home_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.PL_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.PL_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> PL_TL</div>
+                                                {{ form.PL_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Secured_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Secured_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> Secured_TL
+                                                </div>
+                                                {{ form.Secured_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Unsecured_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Unsecured_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong>
+                                                    Unsecured_TL</div>
+                                                {{ form.Unsecured_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Other_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Other_TL.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> Other_TL
+                                                </div>
+                                                {{ form.Other_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Account Ages -->
+                                <div class="feature-group">
+                                    <h5 class="section-title">Account History</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Age_Oldest_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Age_Oldest_TL.description }}
+                                                </div>
+                                                {{ form.Age_Oldest_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Age_Newest_TL.label.text }}</label>
+                                                <div class="field-description">{{ form.Age_Newest_TL.description }}
+                                                </div>
+                                                {{ form.Age_Newest_TL(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.time_since_recent_payment.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.time_since_recent_payment.description }}</div>
+                                                {{ form.time_since_recent_payment(class="form-control",
+                                                placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.Time_With_Curr_Empr.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.Time_With_Curr_Empr.description
+                                                    }}</div>
+                                                {{ form.Time_With_Curr_Empr(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Delinquency Information -->
+                                <div class="feature-group">
+                                    <h5 class="section-title">Payment History</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.max_recent_level_of_deliq.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.max_recent_level_of_deliq.description }}</div>
+                                                {{ form.max_recent_level_of_deliq(class="form-control",
+                                                placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.recent_level_of_deliq.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.recent_level_of_deliq.description
+                                                    }}</div>
+                                                {{ form.recent_level_of_deliq(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_deliq_6_12mts.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.num_deliq_6_12mts.description }}
+                                                </div>
+                                                {{ form.num_deliq_6_12mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_times_60p_dpd.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.num_times_60p_dpd.description }}
+                                                </div>
+                                                {{ form.num_times_60p_dpd(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_std_12mts.label.text }}</label>
+                                                <div class="field-description">{{ form.num_std_12mts.description }}
+                                                </div>
+                                                {{ form.num_std_12mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_sub.label.text }}</label>
+                                                <div class="field-description">{{ form.num_sub.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> num_sub
+                                                </div>
+                                                {{ form.num_sub(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_sub_6mts.label.text }}</label>
+                                                <div class="field-description">{{ form.num_sub_6mts.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong>
+                                                    num_sub_6mts</div>
+                                                {{ form.num_sub_6mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_sub_12mts.label.text }}</label>
+                                                <div class="field-description">{{ form.num_sub_12mts.description }}
+                                                </div>
+                                                {{ form.num_sub_12mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_dbt.label.text }}</label>
+                                                <div class="field-description">{{ form.num_dbt.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> num_dbt
+                                                </div>
+                                                {{ form.num_dbt(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_dbt_12mts.label.text }}</label>
+                                                <div class="field-description">{{ form.num_dbt_12mts.description }}
+                                                </div>
+                                                {{ form.num_dbt_12mts(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.num_lss.label.text }}</label>
+                                                <div class="field-description">{{ form.num_lss.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> num_lss
+                                                </div>
+                                                {{ form.num_lss(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Enquiry Information -->
+                                <div class="feature-group">
+                                    <h5 class="section-title">Credit Applications</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.CC_enq_L12m.label.text }}</label>
+                                                <div class="field-description">{{ form.CC_enq_L12m.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> CC_enq_L12m
+                                                </div>
+                                                {{ form.CC_enq_L12m(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.PL_enq_L12m.label.text }}</label>
+                                                <div class="field-description">{{ form.PL_enq_L12m.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> PL_enq_L12m
+                                                </div>
+                                                {{ form.PL_enq_L12m(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.time_since_recent_enq.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.time_since_recent_enq.description
+                                                    }}</div>
+                                                {{ form.time_since_recent_enq(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.enq_L3m.label.text }}</label>
+                                                <div class="field-description">{{ form.enq_L3m.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> enq_L3m
+                                                </div>
+                                                {{ form.enq_L3m(class="form-control", placeholder="0+") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_PL_enq_L6m_of_ever.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.pct_PL_enq_L6m_of_ever.description }}</div>
+                                                {{ form.pct_PL_enq_L6m_of_ever(class="form-control",
+                                                placeholder="0.0-1.0", step="0.01") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.pct_CC_enq_L6m_of_ever.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.pct_CC_enq_L6m_of_ever.description }}</div>
+                                                {{ form.pct_CC_enq_L6m_of_ever(class="form-control",
+                                                placeholder="0.0-1.0", step="0.01") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Flags -->
+                                <div class="feature-group">
+                                    <h5 class="section-title">Current Credit Products</h5>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.CC_Flag.label.text }}</label>
+                                                <div class="field-description">{{ form.CC_Flag.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> CC_Flag
+                                                </div>
+                                                {{ form.CC_Flag(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.PL_Flag.label.text }}</label>
+                                                <div class="field-description">{{ form.PL_Flag.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> PL_Flag
+                                                </div>
+                                                {{ form.PL_Flag(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.HL_Flag.label.text }}</label>
+                                                <div class="field-description">{{ form.HL_Flag.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> HL_Flag
+                                                </div>
+                                                {{ form.HL_Flag(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.GL_Flag.label.text }}</label>
+                                                <div class="field-description">{{ form.GL_Flag.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> GL_Flag
+                                                </div>
+                                                {{ form.GL_Flag(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Demographics -->
+                                <div class="feature-group">
+                                    <h5 class="section-title">Personal Information</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.EDUCATION.label.text }}</label>
+                                                <div class="field-description">{{ form.EDUCATION.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> EDUCATION
+                                                </div>
+                                                {{ form.EDUCATION(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.MARITALSTATUS_Married.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.MARITALSTATUS_Married.description
+                                                    }}</div>
+                                                {{ form.MARITALSTATUS_Married(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.MARITALSTATUS_Single.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.MARITALSTATUS_Single.description
+                                                    }}</div>
+                                                {{ form.MARITALSTATUS_Single(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.GENDER_F.label.text }}</label>
+                                                <div class="field-description">{{ form.GENDER_F.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> GENDER_F
+                                                </div>
+                                                {{ form.GENDER_F(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.GENDER_M.label.text }}</label>
+                                                <div class="field-description">{{ form.GENDER_M.description }}</div>
+                                                <div class="field-description"><strong>Column Name:</strong> GENDER_M
+                                                </div>
+                                                {{ form.GENDER_M(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Product Enquiries -->
+                                <div class="feature-group">
+                                    <h5 class="section-title">Most Recent Credit Application</h5>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_AL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_AL.description }}
+                                                </div>
+                                                {{ form.last_prod_enq2_AL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_CC.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_CC.description }}
+                                                </div>
+                                                {{ form.last_prod_enq2_CC(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_ConsumerLoan.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.last_prod_enq2_ConsumerLoan.description }}</div>
+                                                {{ form.last_prod_enq2_ConsumerLoan(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_HL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_HL.description }}
+                                                </div>
+                                                {{ form.last_prod_enq2_HL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_PL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_PL.description }}
+                                                </div>
+                                                {{ form.last_prod_enq2_PL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.last_prod_enq2_others.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.last_prod_enq2_others.description
+                                                    }}</div>
+                                                {{ form.last_prod_enq2_others(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="feature-group">
+                                    <h5 class="section-title">First Credit Application</h5>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_AL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.first_prod_enq2_AL.description }}
+                                                </div>
+                                                {{ form.first_prod_enq2_AL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_CC.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.first_prod_enq2_CC.description }}
+                                                </div>
+                                                {{ form.first_prod_enq2_CC(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{
+                                                    form.first_prod_enq2_ConsumerLoan.label.text }}</label>
+                                                <div class="field-description">{{
+                                                    form.first_prod_enq2_ConsumerLoan.description }}</div>
+                                                {{ form.first_prod_enq2_ConsumerLoan(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_HL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.first_prod_enq2_HL.description }}
+                                                </div>
+                                                {{ form.first_prod_enq2_HL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_PL.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{ form.first_prod_enq2_PL.description }}
+                                                </div>
+                                                {{ form.first_prod_enq2_PL(class="form-select") }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ form.first_prod_enq2_others.label.text
+                                                    }}</label>
+                                                <div class="field-description">{{
+                                                    form.first_prod_enq2_others.description }}</div>
+                                                {{ form.first_prod_enq2_others(class="form-select") }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-brain me-2"></i>Predict Credit Risk
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="loading" id="loading">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-3">Processing your request...</p>
+                            </div>
+
+                            <div id="result" style="display: none;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Batch Upload -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-upload me-2"></i>Batch Prediction
+                        </div>
+                        <div class="card-body">
+                            <form id="batchForm" method="POST" action="/predict_batch" enctype="multipart/form-data">
+                                {{ batch_form.hidden_tag() }}
+
+                                <div class="file-upload-area" id="fileUploadArea">
+                                    <div id="uploadContent">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                        <h5>Upload Data File for Batch Prediction</h5>
+                                        <p class="text-muted">Drag and drop your file here or click to browse</p>
+                                        <p class="text-muted"><strong>Supported formats:</strong> CSV, Excel (.xlsx/.xls), JSON</p>
+                                    </div>
+                                    {{ batch_form.batch_file(class="form-control", id="batchFile",
+                                    accept=".csv,.xlsx,.xls,.json", style="display:none;") }}
+                                    <div class="mt-3" id="submitButtonArea" style="display:none;">
+                                        <button type="submit" class="btn btn-success btn-lg">
+                                            <i class="fas fa-play me-2"></i>Process Batch Prediction
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info mt-3">
+                                    <h6><i class="fas fa-info-circle me-2"></i>File Requirements:</h6>
+                                    <ul class="mb-0">
+                                        <li><strong>CSV Files:</strong> Must contain all required columns with proper headers</li>
+                                        <li><strong>Excel Files:</strong> First sheet will be used, must contain all required columns</li>
+                                        <li><strong>JSON Files:</strong> Can be array of objects or single object with 'data'/'records' key</li>
+                                        <li>Maximum file size: 16MB</li>
+                                        <li>Missing values will be filled with 0</li>
+                                        <li>Results will be downloaded as CSV (except JSON input returns JSON response)</li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form submission handling
+        document.getElementById('predictionForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    loading.style.display = 'none';
+
+                    if (data.success) {
+                        let resultHtml = `
+                        <div class="result-card">
+                            <h3><i class="fas fa-check-circle me-2"></i>Prediction Complete</h3>
+                            <div class="prediction">${data.prediction}</div>
+                            <p class="mb-4">Credit Risk Classification</p>
+                    `;
+
+                        if (data.probabilities) {
+                            resultHtml += '<h5>Prediction Probabilities:</h5>';
+                            for (const [class_name, prob] of Object.entries(data.probabilities)) {
+                                const percentage = (prob * 100).toFixed(1);
+                                resultHtml += `
+                                <div class="probability-bar">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>${class_name}</span>
+                                        <span>${percentage}%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: ${percentage}%"></div>
+                                    </div>
+                                </div>
+                            `;
+                            }
+                        }
+
+                        resultHtml += '</div>';
+                        result.innerHTML = resultHtml;
+                    } else {
+                        result.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i>Error</h5>
+                            <p>${data.error}</p>
+                        </div>
+                    `;
+                    }
+
+                    result.style.display = 'block';
+                })
+                .catch(error => {
+                    loading.style.display = 'none';
+                    result.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h5><i class="fas fa-exclamation-triangle me-2"></i>Error</h5>
+                        <p>An error occurred while processing your request.</p>
+                    </div>
+                `;
+                    result.style.display = 'block';
+                });
+        });
+
+        // File upload functionality
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const batchFile = document.getElementById('batchFile');
+        const uploadContent = document.getElementById('uploadContent');
+        const submitButtonArea = document.getElementById('submitButtonArea');
+
+        // Click to upload
+        fileUploadArea.addEventListener('click', function(e) {
+            // Don't trigger if clicking the submit button
+            if (!e.target.closest('button')) {
+                batchFile.click();
+            }
+        });
+
+        // File selection handler
+        batchFile.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                let iconClass = 'fas fa-file fa-3x text-success mb-3';
+
+                // Set appropriate icon based on file type
+                if (fileExtension === 'csv') {
+                    iconClass = 'fas fa-file-csv fa-3x text-success mb-3';
+                } else if (fileExtension === 'xlsx' || fileExtension === 'xls') {
+                    iconClass = 'fas fa-file-excel fa-3x text-success mb-3';
+                } else if (fileExtension === 'json') {
+                    iconClass = 'fas fa-file-code fa-3x text-success mb-3';
+                }
+
+                // Update the display
+                uploadContent.innerHTML = `
+                    <i class="${iconClass}"></i>
+                    <h5>File Selected: ${file.name}</h5>
+                    <p class="text-muted">Size: ${(file.size / 1024).toFixed(2)} KB</p>
+                    <p class="text-muted">Ready for batch processing</p>
+                `;
+                
+                // Show submit button
+                submitButtonArea.style.display = 'block';
+            }
+        });
+
+        // Drag and drop functionality
+        fileUploadArea.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                // Check if file type is supported
+                if (['csv', 'xlsx', 'xls', 'json'].includes(fileExtension)) {
+                    // Create a new FileList-like object
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    batchFile.files = dataTransfer.files;
+                    
+                    // Trigger change event
+                    batchFile.dispatchEvent(new Event('change', { bubbles: true }));
+                } else {
+                    alert('Please select a supported file format (CSV, Excel, or JSON).');
+                }
+            }
+        });
+
+        // Batch form submission
+        document.getElementById('batchForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            
+            const currentBatchFile = document.getElementById('batchFile');
+            
+            // Check if file exists
+            if (!currentBatchFile || !currentBatchFile.files || currentBatchFile.files.length === 0) {
+                alert('Please select a file first.');
+                return;
+            }
+
+            // Disable button and show loading
+            const submitBtn = submitButtonArea.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            }
+
+            // Create FormData and submit
+            const formData = new FormData(this);
+            
+            fetch('/predict_batch', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // Check if response is JSON or file download
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json();
+                } else {
+                    // Handle file download
+                    return response.blob().then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'predictions.csv';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                        return { success: true, message: 'File downloaded successfully!' };
+                    });
+                }
+            })
+            .then(data => {
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                } else if (data.success) {
+                    alert('Prediction completed successfully!');
+                    // Reset form
+                    uploadContent.innerHTML = `
+                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                        <h5>Upload Data File for Batch Prediction</h5>
+                        <p class="text-muted">Drag and drop your file here or click to browse</p>
+                        <p class="text-muted"><strong>Supported formats:</strong> CSV, Excel (.xlsx/.xls), JSON</p>
+                    `;
+                    submitButtonArea.style.display = 'none';
+                    batchFile.value = '';
+                }
+            })
+            .catch(error => {
+                alert('An error occurred: ' + error.message);
+            })
+            .finally(() => {
+                // Re-enable button
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-play me-2"></i>Process Batch Prediction';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
